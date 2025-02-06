@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Will You Be My Valentine? 💘</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            padding: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .buttons {
+            margin: 30px;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .gif-container {
+            margin-top: 20px;
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            pointer-events: none;
+            animation: heartFloat 3s linear forwards;
+        }
+
+        @keyframes heartFloat {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-1000px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fireworks" id="fireworks-container"></div>
+    <div class="container">
+        <h1>Will You Be My Valentine? 💖</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="acceptProposal()">YES! 😍</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No 😢</button>
+        </div>
+        <div class="gif-container" id="gifContainer"></div>
+        <audio id="backgroundMusic" loop>
+            <source src="https://your-audio-host.com/until-i-found-you.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+    <script>
+        const noButton = document.getElementById('noBtn');
+        const gifContainer = document.getElementById('gifContainer');
+        const audio = document.getElementById('backgroundMusic');
+        
+        const sadGifs = [
+            'https://media.giphy.com/media/3o7TKsQ8UQ1h2n7ABi/giphy.gif',
+            'https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif',
+            'https://media.giphy.com/media/3o7TKr7e7zJv5eMN8Q/giphy.gif'
+        ];
+
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - 200);
+            const y = Math.random() * (window.innerHeight - 100);
+            noButton.style.position = 'absolute';
+            noButton.style.left = x + 'px';
+            noButton.style.top = y + 'px';
+            
+            // Show random sad GIF
+            gifContainer.innerHTML = `<img src="${sadGifs[Math.floor(Math.random() * sadGifs.length)]}" 
+                                      style="height: 200px; border-radius: 15px;">`;
+        }
+
+        function acceptProposal() {
+            // Romantic elements
+            document.body.style.background = '#ff1493';
+            gifContainer.innerHTML = `<img src="https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif" 
+                                      style="height: 300px;">`;
+            
+            // Start fireworks
+            const fireworks = new Fireworks(document.getElementById('fireworks-container'), {
+                intensity: 30,
+                particles: 100,
+                explosion: 10
+            });
+            fireworks.start();
+
+            // Start music
+            audio.play().catch(() => {
+                // Handle autoplay restrictions
+                alert('Click anywhere to start music!');
+                document.addEventListener('click', () => audio.play());
+            });
+
+            // Create floating hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * window.innerWidth + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
